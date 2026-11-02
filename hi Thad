@@ -1,0 +1,541 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gunba Archive — 銃兔 × 刃</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+TC:wght@300;400;500&display=swap');
+
+:root {
+  --black: #080A10;
+  --blue: #B0C4DE;
+  --pale: #E8EDF4;
+  --muted: #8294AC;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--black);
+  color: var(--pale);
+  font-family: 'Noto Serif TC', serif;
+  overflow-x: hidden;
+}
+
+/* 動態背景 */
+
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 40%, #182435 0%, transparent 55%),
+    linear-gradient(145deg, #080A10, #101824, #080A10);
+}
+
+.aurora {
+  position: absolute;
+  width: 70vw;
+  height: 70vw;
+  max-width: 850px;
+  max-height: 850px;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.17;
+  background: #B0C4DE;
+  animation: auroraMove 16s ease-in-out infinite alternate;
+}
+
+.aurora.one {
+  top: -35%;
+  left: -20%;
+}
+
+.aurora.two {
+  right: -30%;
+  bottom: -45%;
+  opacity: 0.12;
+  animation-delay: -8s;
+}
+
+@keyframes auroraMove {
+  0% {
+    transform: translate(0, 0) scale(0.9);
+  }
+  50% {
+    transform: translate(15vw, 12vh) scale(1.15);
+  }
+  100% {
+    transform: translate(-8vw, 18vh) scale(0.95);
+  }
+}
+
+/* 漂浮星點 */
+
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #DCE8F7;
+  opacity: 0;
+  box-shadow: 0 0 10px #B0C4DE;
+  animation: twinkle var(--duration) ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.08;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translateY(-15px);
+  }
+}
+
+/* 背景細線 */
+
+.background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(rgba(176,196,222,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(176,196,222,0.08) 1px, transparent 1px);
+  background-size: 65px 65px;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
+/* 滑鼠光暈 */
+
+.cursor-light {
+  position: fixed;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(176,196,222,0.12),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+}
+
+/* 導覽列 */
+
+header {
+  width: 100%;
+  padding: 25px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(176,196,222,0.15);
+}
+
+.logo {
+  color: var(--blue);
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 4px;
+  font-size: 18px;
+}
+
+.menu {
+  display: flex;
+  gap: 25px;
+}
+
+.menu a {
+  color: #AAB7C8;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 2px;
+  transition: 0.4s;
+}
+
+.menu a:hover {
+  color: white;
+}
+
+/* 首頁主視覺 */
+
+.hero {
+  min-height: 690px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 20px;
+  position: relative;
+}
+
+.eyebrow {
+  color: var(--blue);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 6px;
+  margin-bottom: 35px;
+  animation: fadeUp 1.5s both;
+}
+
+.hero h1 {
+  font-family: 'Noto Serif TC', serif;
+  font-weight: 300;
+  font-size: clamp(45px, 9vw, 92px);
+  letter-spacing: 12px;
+  color: #E8EDF4;
+  text-shadow: 0 0 35px rgba(176,196,222,0.2);
+  animation: fadeUp 1.8s both;
+}
+
+.subtitle {
+  margin-top: 20px;
+  color: var(--blue);
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 8px;
+  font-size: 15px;
+  animation: fadeUp 2s both;
+}
+
+.hero-line {
+  width: 55px;
+  height: 1px;
+  background: var(--blue);
+  margin: 38px 0;
+  opacity: 0.7;
+}
+
+.hero-description {
+  color: #B7C1D0;
+  font-size: 13px;
+  letter-spacing: 3px;
+  line-height: 2.5;
+  animation: fadeUp 2.2s both;
+}
+
+.enter-button {
+  margin-top: 48px;
+  padding: 14px 38px;
+  border: 1px solid rgba(176,196,222,0.55);
+  color: var(--blue);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 4px;
+  transition: 0.5s;
+}
+
+.enter-button:hover {
+  background: var(--blue);
+  color: var(--black);
+  box-shadow: 0 0 30px rgba(176,196,222,0.2);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 導覽區 */
+
+.archive {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 70px 25px 120px;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-heading span {
+  color: var(--blue);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+}
+
+.section-heading h2 {
+  font-weight: 300;
+  font-size: 24px;
+  letter-spacing: 8px;
+  margin-top: 12px;
+}
+
+.nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.nav-card {
+  min-height: 150px;
+  padding: 30px 20px;
+  border: 1px solid rgba(176,196,222,0.17);
+  background: rgba(176,196,222,0.025);
+  text-decoration: none;
+  color: var(--pale);
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nav-card:hover {
+  border-color: var(--blue);
+  background: rgba(176,196,222,0.09);
+  transform: translateY(-5px);
+}
+
+.nav-number {
+  color: var(--blue);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.nav-title {
+  font-size: 15px;
+  letter-spacing: 4px;
+  margin-top: 25px;
+}
+
+.nav-subtitle {
+  color: #7F90A6;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-top: 8px;
+}
+
+/* 底部 */
+
+footer {
+  text-align: center;
+  padding: 30px 15px;
+  border-top: 1px solid rgba(176,196,222,0.15);
+  color: #8190A5;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  line-height: 2.5;
+}
+
+/* 手機版 */
+
+@media (max-width: 650px) {
+  header {
+    padding: 20px;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .hero {
+    min-height: 600px;
+  }
+
+  .hero h1 {
+    letter-spacing: 6px;
+  }
+
+  .subtitle {
+    letter-spacing: 4px;
+  }
+
+  .nav-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav-card {
+    min-height: 130px;
+    padding: 20px 15px;
+  }
+}
+
+/* 減少動態效果的使用者設定 */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 動態背景 -->
+<div class="background">
+  <div class="aurora one"></div>
+  <div class="aurora two"></div>
+</div>
+
+<div class="stars" id="stars"></div>
+<div class="cursor-light" id="cursorLight"></div>
+
+<!-- 導覽列 -->
+<header>
+  <div class="logo">GUNBA ARCHIVE</div>
+  <nav class="menu">
+    <a href="#home">HOME</a>
+    <a href="#archive">ARCHIVE</a>
+    <a href="#about">ABOUT</a>
+  </nav>
+</header>
+
+<!-- 首頁 -->
+<main id="home">
+  <section class="hero">
+
+    <div class="eyebrow">A STORY ONLY WE KNOW</div>
+
+    <h1>銃兔 × 刃</h1>
+
+    <div class="subtitle">GUNBA ARCHIVE</div>
+
+    <div class="hero-line"></div>
+
+    <p class="hero-description">
+      彼此信任，並肩走過每一個明天。<br>
+      將那些平凡而珍貴的日子，慢慢收藏。
+    </p>
+
+    <a href="#archive" class="enter-button">
+      ENTER OUR WORLD　→
+    </a>
+
+  </section>
+
+  <!-- 網站導覽 -->
+  <section class="archive" id="archive">
+
+    <div class="section-heading">
+      <span>THE COLLECTION</span>
+      <h2>故事收藏</h2>
+    </div>
+
+    <div class="nav-grid">
+
+      <a href="profile.html" class="nav-card">
+        <div class="nav-number">01 / PROFILE</div>
+        <div>
+          <div class="nav-title">角色介紹</div>
+          <div class="nav-subtitle">The Characters</div>
+        </div>
+      </a>
+
+      <a href="chronicle.html" class="nav-card">
+        <div class="nav-number">02 / CHRONICLE</div>
+        <div>
+          <div class="nav-title">相處紀錄</div>
+          <div class="nav-subtitle">Our Memories</div>
+        </div>
+      </a>
+
+      <a href="gallery.html" class="nav-card">
+        <div class="nav-number">03 / GALLERY</div>
+        <div>
+          <div class="nav-title">插圖收藏</div>
+          <div class="nav-subtitle">Art Collection</div>
+        </div>
+      </a>
+
+      <a href="anniversary.html" class="nav-card">
+        <div class="nav-number">04 / ANNIVERSARY</div>
+        <div>
+          <div class="nav-title">紀念日</div>
+          <div class="nav-subtitle">Special Days</div>
+        </div>
+      </a>
+
+      <a href="story.html" class="nav-card">
+        <div class="nav-number">05 / OUR STORY</div>
+        <div>
+          <div class="nav-title">夢向設定</div>
+          <div class="nav-subtitle">Our Story</div>
+        </div>
+      </a>
+
+      <a href="playlist.html" class="nav-card">
+        <div class="nav-number">06 / PLAYLIST</div>
+        <div>
+          <div class="nav-title">歌曲與印象曲</div>
+          <div class="nav-subtitle">Our Playlist</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  GUNBA ARCHIVE<br>
+  IN THE QUIET MOMENTS, WE FIND EACH OTHER.
+</footer>
+
+<script>
+/* 自動產生背景星點 */
+
+const stars = document.getElementById("stars");
+
+for (let i = 0; i < 85; i++) {
+  const star = document.createElement("span");
+  star.className = "star";
+
+  star.style.left = Math.random() * 100 + "%";
+  star.style.top = Math.random() * 100 + "%";
+  star.style.setProperty("--duration", (3 + Math.random() * 5) + "s");
+  star.style.setProperty("--delay", (Math.random() * 6) + "s");
+
+  stars.appendChild(star);
+}
+
+/* 滑鼠光暈跟隨 */
+
+const cursorLight = document.getElementById("cursorLight");
+
+window.addEventListener("pointermove", (event) => {
+  cursorLight.style.left = event.clientX + "px";
+  cursorLight.style.top = event.clientY + "px";
+});
+</script>
+
+</body>
+</html>
